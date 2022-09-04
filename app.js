@@ -3,7 +3,8 @@ const bodyParser = require("body-parser");
 
 const app = express();
 
-var items = ["Tell Wincy you love her", "Kiss Wincy"];
+var items = ["Cook food", "Eat Food"];
+var workItems = [];
 
 app.set("view engine", "ejs");
 
@@ -20,15 +21,24 @@ app.get("/", function (req, res) {
   };
 
   let dateFormatted = today.toLocaleDateString("En-US", options);
-  res.render("index", { myDate: dateFormatted, myItems: items });
+  res.render("index", { title: dateFormatted, myItems: items });
+});
+
+app.get("/work", function (req, res) {
+  res.render("index", { title: "Work", myItems: workItems });
 });
 
 app.post("/", function (req, res) {
-  var newItem = req.body.addItem;
+  let newItem = req.body.addItem;
 
-  items.push(newItem);
+  if (req.body.button === "Work") {
+    workItems.push(newItem);
+    res.redirect("/work");
+  } else {
+    items.push(newItem);
 
-  res.redirect("/");
+    res.redirect("/");
+  }
 });
 
 app.listen(3000, function () {
