@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title>Page Title</title>
+
+    <link rel="stylesheet" href="css/styles.css" />
+  </head>
+  <body>
+    <div class="box" id="heading">
+      <h1><%=myDate %></h1>
+    </div>
+
+    <div class="box">
+        <% for (let i=0; i<myItems.length; i++) { %>
+            <div class="item">
+                <input type="checkbox">
+                <p><%= myItems[i] %></p>
+            </div>
+        <% } %>
+    
+
+      <form action="/" method="POST" class="item">
+        <input type="text" name="addItem" placeholder="New Item" autocomplete="off"/>
+        <button type="submit" name="button">+</button>
+      </form>
+    </div>
+  </body>
+</html>
