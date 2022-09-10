@@ -9,10 +9,13 @@
 <div class="box">
 
   <% myItems.forEach( (item) => { %>
-    <div class="item">
-      <input type = "checkbox">
-      <p><%= item.item %> </p>
-    </div>
+    <form action="/delete" method = "POST">
+      <div class="item">
+        <input type = "checkbox" onChange="this.form.submit()" name="listItem" value="<%=item._id%>">
+        <p><%= item.item %> </p>
+      </div>
+      <input hidden="true" name = "listName" value=<%=title%>>
+    </form>
   <% }) %>
 
 

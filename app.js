@@ -2,6 +2,7 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const { default: mongoose, Schema } = require("mongoose");
 const date = require(__dirname + "/date.js");
+const _ = require("lodash");
 
 const app = express();
 
@@ -47,13 +48,13 @@ app.get("/", function (req, res) {
 
       setTimeout(() => res.redirect("/"), 100);
     } else {
-      res.render("index", { title: "ToDo-List", myItems: list.items });
+      res.render("index", { title: list.name, myItems: list.items });
     }
   });
 });
 
 app.get("/:customList", (req, res) => {
-  listName = req.params.customList;
+  listName = _.capitalize(req.params.customList);
 
   List.findOne({ name: listName }, (err, list) => {
     if (!list) {
@@ -85,6 +86,27 @@ app.post("/", function (req, res) {
       list.save();
     }
   });
+
+  if (listName != "ToDo-List") {
+    res.redirect("/" + listName);
+  } else {
+    res.redirect("/");
+  }
+});
+
+app.post("/delete", function (req, res) {
+  const listName = req.body.listName;
+  const listItem = req.body.listItem;
+
+  List.findOneAndUpdate(
+    { name: listName },
+    { $pull: { items: { _id: listItem } } },
+    (err) => {
+      if (!err) {
+        console.log("item removed");
+      }
+    }
+  );
 
   if (listName != "ToDo-List") {
     res.redirect("/" + listName);
